@@ -31,10 +31,8 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      # vvvvvv 这是新加的关键步骤 vvvvvv
       - name: Set lower-case owner
         run: echo "OWNER_LC=$(echo ${{ github.repository_owner }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
-      # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -43,7 +41,6 @@ jobs:
           push: true
           platforms: linux/amd64,linux/arm64
           tags: |
-            # vvvvvv 这里使用了新的小写变量 vvvvvv
             ghcr.io/${{ env.OWNER_LC }}/xxd:2205
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
@@ -51,4 +48,3 @@ jobs:
             org.opencontainers.image.licenses=MIT
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
